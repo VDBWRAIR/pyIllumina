@@ -1,0 +1,4 @@
+THIS_SCRIPT=${BASH_SOURCE[@]}
+THIS_DIR=$(dirname $THIS_SCRIPT)
+
+export PYTHONPATH=$(cd $(dirname $THIS_DIR) && pwd)
