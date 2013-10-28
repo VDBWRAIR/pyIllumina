@@ -19,6 +19,9 @@ class SampleSheet(object):
             raise IndexError( "No section named {}".format(val) )
         return self._sections[val]
 
+    def __iter__( self ):
+        return iter( self['Data'].samples )
+
     def _parse( self ):
         if self._sections:
             return
@@ -31,7 +34,10 @@ class SampleSheet(object):
                         self._sections[current_section].parse( current_data )
                         current_data = []
                     current_section = line.strip().replace(']','').replace('[','')
-                    self._sections[current_section] = Section(current_section)
+                    if current_section == 'Data':
+                        self._sections[current_section] = DataSection( current_section )
+                    else:
+                        self._sections[current_section] = Section(current_section)
                 else:
                     current_data.append( line )
             self._sections[current_section].parse( current_data )
@@ -117,3 +123,15 @@ class Section(object):
                 rStr = rStr[:-1] + '\n'
             rStr = rStr[:-1]
         return rStr
+
+class DataSection(Section):
+    def __init__( self, section_name ):
+        super( DataSection, self ).__init__( section_name )
+
+    def parse_csv( self, data ):
+        super( DataSection, self ).parse_csv( data )
+        self.samples = {}
+        for d in getattr( self, self.name ):
+            samplename = d['Sample_Name']
+            self.samples[samplename] = d
+

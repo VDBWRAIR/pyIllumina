@@ -1,4 +1,4 @@
-[Header],
+[Header]
 IEMFileVersion,3
 Investigator Name,2x100_Training 
 Project Name,ResequencingPhixRun
@@ -8,11 +8,11 @@ Workflow,Resequencing
 Assay,TruSeq DNA/RNA
 Description,
 Chemistry,Default
-[Reads],
+[Reads]
 100,
 100,
-[Settings],
+[Settings]
 OnlyGenerateFASTQ,0
-[Data],
+[Data]
 Sample_ID,Sample_Name,Sample_Plate,Sample_Well,Sample_Project,Description,GenomeFolder
 Sample1,Phix,,,,,C:\Illumina\MiSeq Reporter\Genomes\PhiX\Illumina\RTA\Sequence\Chromosomes

@@ -17,11 +17,11 @@ Key2,Val2
 Val1
 Val2
 
-[Csv]
-h1,h2,h3,h4
-1,2,3,4
-5,6,7,8
-9,10,11,12'''
+[Data]
+h1,Sample_Name,h2,h3,h4
+1,S1,2,3,4
+5,S2,6,7,8
+9,S3,10,11,12'''
 
     @classmethod
     def setUpClass( self ):
@@ -34,11 +34,15 @@ h1,h2,h3,h4
     def tearDownClass( self ):
         os.unlink( self.samplesheet )
 
+    def test_iter( self ):
+        ss = SampleSheet.SampleSheet( self.samplesheet )
+        eq_( ['S1','S2','S3'], sorted([sn for sn in ss]) )
+
     def test_getitem( self ):
         ss = SampleSheet.SampleSheet( self.samplesheet )
         assert isinstance( ss['KeyVal'], SampleSheet.Section )
         assert isinstance( ss['ValOnly'], SampleSheet.Section )
-        assert isinstance( ss['Csv'], SampleSheet.Section )
+        assert isinstance( ss['Data'], SampleSheet.Section )
 
     def test_tostr( self ):
         ss = SampleSheet.SampleSheet( self.samplesheet )
@@ -102,3 +106,13 @@ class TestSection( object ):
             print inst.Test
             dstr = '[Test]\n' + dstr
             eq_( dstr, str(inst) )
+
+class TestDataSection(object):
+    data = '''[Data]
+Sample_ID,Sample_Name,Sample_Plate,Sample_Well,Sample_Project,Description,GenomeFolder
+Sample1,SampleName1,,,,,C:\Illumina\MiSeq Reporter\Genomes\PhiX\Illumina\RTA\Sequence\Chromosomes'''
+
+    def test_parse( self ):
+        ss = SampleSheet.DataSection('Data')
+        ss.parse( self.data.splitlines()[1:] )
+        assert isinstance( ss.samples['SampleName1'], dict )
