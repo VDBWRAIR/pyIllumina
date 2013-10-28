@@ -1,6 +1,6 @@
 import re
 
-class RunParameters(object):
+class XMLFile(object):
     def __init__( self, path ):
         self.path = path
         self._contents = ''
@@ -25,9 +25,3 @@ class RunParameters(object):
 
     def __getattr__( self, name ):
         return self._dyn_property( name )
-
-if __name__ == '__main__':
-    pth = '131015_M02261_0002_000000000-A6EYG/runParameters.xml'
-    rp = RunParameters(pth)
-    print rp.OutputFolder
-    print rp.SampleSheetName

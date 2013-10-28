@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<AnalysisJobInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="0">
+  <AlignmentFolder>D:\Illumina\MiSeqAnalysis\131007_M02261_0001_000000000-A6D73\Data\Intensities\BaseCalls\Alignment</AlignmentFolder>
+  <CompletionTime>2013-10-08T04:45:46.2529678-07:00</CompletionTime>
+  <RTARunInfo Version="2">
+    <Run Id="131007_M02261_0001_000000000-A6D73">
+      <Flowcell>000000000-A6D73</Flowcell>
+      <Instrument>M02261</Instrument>
+      <Date>131007</Date>
+      <Reads>
+        <Read NumCycles="100" IsIndexedRead="N" />
+        <Read NumCycles="100" IsIndexedRead="N" />
+      </Reads>
+      <FlowcellLayout LaneCount="1" SurfaceCount="2" SwathCount="1" TileCount="14" />
+      <AlignToPhiX />
+    </Run>
+  </RTARunInfo>
+  <RunFolder>D:\Illumina\MiSeqAnalysis\131007_M02261_0001_000000000-A6D73</RunFolder>
+  <Sheet>
+    <Type>MiSeq</Type>
+    <WorkflowType>Resequencing</WorkflowType>
+    <Header>
+      <Chemistry>Default</Chemistry>
+      <Date>10/07/2013</Date>
+      <ExperimentName>2x100PhiX</ExperimentName>
+      <InvestigatorName>2x100_Training </InvestigatorName>
+    </Header>
+  </Sheet>
+  <StartTime>2013-10-08T04:01:08.0241367-07:00</StartTime>
+  <Workflow>
+    <ResequencingSettings>
+      <Aligner>bwa</Aligner>
+      <FlagPCRDuplicates>true</FlagPCRDuplicates>
+      <PerformIndelRealignment>None</PerformIndelRealignment>
+      <RunCNVDetection>false</RunCNVDetection>
+      <RunSVDetection>false</RunSVDetection>
+      <PicardHsMetrics>false</PicardHsMetrics>
+      <StarlingEnrichmentWithManifest>false</StarlingEnrichmentWithManifest>
+      <FilterOffTargetVariants>true</FilterOffTargetVariants>
+    </ResequencingSettings>
+    <WorkflowSettings>
+      <AdapterSequences />
+      <AdapterSequences2 />
+      <FastQInput>false</FastQInput>
+      <StitchReads>false</StitchReads>
+      <MaximumThreadCount>0</MaximumThreadCount>
+      <ReadTrimQualityScoreLevel>0</ReadTrimQualityScoreLevel>
+      <ReverseComplement>false</ReverseComplement>
+      <VarCallerSettings>
+        <Filters>
+          <FilterOutSingleProbePoolVariants>false</FilterOutSingleProbePoolVariants>
+          <FilterOutSingleStrandVariants>false</FilterOutSingleStrandVariants>
+          <IndelRepeatFilterCutoff>8</IndelRepeatFilterCutoff>
+          <MinQScore>0</MinQScore>
+          <MinimumCoverageDepthEmitCutoff>-1</MinimumCoverageDepthEmitCutoff>
+          <MinimumDepthCutoff>-1</MinimumDepthCutoff>
+          <MinimumGQCutoff>30</MinimumGQCutoff>
+          <MinimumGQXCutoff>0</MinimumGQXCutoff>
+          <MinimumMQCutoff>0</MinimumMQCutoff>
+          <MinimumQDCutoff>0</MinimumQDCutoff>
+          <MinimumQualCutoff>-1</MinimumQualCutoff>
+          <MinimumQualityEmitCutoff>-1</MinimumQualityEmitCutoff>
+          <OnlyCallInROI>false</OnlyCallInROI>
+          <StrandBiasFilterCutoff>0</StrandBiasFilterCutoff>
+          <VariantFrequencyEmitCutoff>0</VariantFrequencyEmitCutoff>
+          <VariantFrequencyFilterCutoff>0.20000000298023224</VariantFrequencyFilterCutoff>
+        </Filters>
+        <OutputGenomeVcf>false</OutputGenomeVcf>
+      </VarCallerSettings>
+      <VariantCaller>GATK</VariantCaller>
+    </WorkflowSettings>
+    <WorkflowVersion>1.0.0.1</WorkflowVersion>
+    <Analysis>Resequencing</Analysis>
+  </Workflow>
+  <Warning>Unexpected setting 'onlygeneratefastq' found in [Settings] section of sample sheet.  This setting will be ignored</Warning>
+  <RunStats>
+    <AnalysisSoftwareVersion>2.2.29.0</AnalysisSoftwareVersion>
+    <NumberOfClustersPF>0</NumberOfClustersPF>
+    <NumberOfClustersRaw>0</NumberOfClustersRaw>
+    <NumberOfDuplicateClusters>0</NumberOfDuplicateClusters>
+    <NumberOfUnalignedClusters>0</NumberOfUnalignedClusters>
+    <NumberOfUnalignedClustersPF>0</NumberOfUnalignedClustersPF>
+    <NumberOfUnindexedClusters>0</NumberOfUnindexedClusters>
+    <NumberOfUnindexedClustersPF>0</NumberOfUnindexedClustersPF>
+    <OverallCoverage>0</OverallCoverage>
+    <YieldInBasesPF>0</YieldInBasesPF>
+    <YieldInBasesRaw>0</YieldInBasesRaw>
+  </RunStats>
+  <AnalysisSoftwareVersion>2.2.29</AnalysisSoftwareVersion>
+  <RTAOutputFolder>D:\Illumina\MiSeqOutput\131007_M02261_0001_000000000-A6D73</RTAOutputFolder>
+</AnalysisJobInfo>
