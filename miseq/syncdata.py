@@ -7,14 +7,15 @@ import subprocess
 import shlex
 import os
 
-from miseq import util
+import util
+from rundir import MiSeqRunDir
 
 # Defaults
 DEFAULT_DEST = "/home/EIDRUdata/NGSData/RawData/MiSeq"
 DEFAULT_SRC = "/MiSeq/Illumina/MiSeqOutput"
 
 # Common Dirs
-BASECALLS_DIR = "Data/Intensities/BaseCalls/"
+BASECALLS_DIR = MiSeqRunDir.BASECALLERDIR
 
 def main():
     args = parse_args()
