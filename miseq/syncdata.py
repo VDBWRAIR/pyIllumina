@@ -21,7 +21,9 @@ def main():
     src = args.src
     dst = args.dest
     basecallsdir = args.basecallsdir
+    sync_run( src, dst, basecallsdir )
 
+def sync_run( src, dst, basecallsdir ):
     # If a non run directory was given assume that
     # the user specified the OutputDirectory and get the
     # latest run to transfer
@@ -59,6 +61,8 @@ def sync_fastq( src, dst, path ):
 
     print "Syncing Fastqs"
     rsync( src, dst, exclude=['Matrix','L001','Phasing','Alignment'] )
+
+    return dst
 
 def rsync( src, dst, exclude=[], include=[] ):
     ''' Just call rsync with src and dst '''
@@ -101,6 +105,7 @@ def parse_args():
     parser.add_argument(
         '-b',
         '--base-calls',
+        dest='basecallsdir',
         default=BASECALLS_DIR,
         help='Base calls subdirectory path that contains fastq.gz files. '\
             '[Default:{}]'.format(BASECALLS_DIR)

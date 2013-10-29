@@ -1,0 +1,2 @@
+
+class OutputFile( object ):
