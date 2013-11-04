@@ -1,23 +1,21 @@
 from .. import util
 from nose.tools import eq_, raises
 
+import util as testutil
+
 import tempfile
 import shutil
 import os
 from os.path import join, dirname, basename
+import gzip
 
-def create( filepath ):
-    open(filepath,'w').close()
+class TestUtil( testutil.BaseClass ):
+    def test_ungzip( self ):
+        contents = '123457abcdefg'*1000
+        fn = 'test'
+        with gzip.open(fn+'.gz','wb') as gz:
+            gz.write(contents)
 
-def remove( filepath ):
-    os.unlink( filepath )
+        util.ungzip( fn+'.gz', fn )
 
-class TestUtil( object ):
-    def setUp( self ):
-        self.tempdir = tempfile.mkdtemp()
-        os.chdir( self.tempdir )
-
-    def tearDown( self ):
-        os.chdir( '/' )
-        shutil.rmtree( self.tempdir )
-
+        eq_( contents, open(fn).read() )

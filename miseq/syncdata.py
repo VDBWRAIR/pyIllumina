@@ -10,10 +10,6 @@ import os
 import util
 import rundir
 
-# Defaults
-DEFAULT_DEST = "/home/EIDRUdata/NGSData/RawData/MiSeq"
-DEFAULT_SRC = "/MiSeq/Illumina/MiSeqOutput"
-
 def main():
     args = parse_args()
     src = args.src
@@ -48,9 +44,10 @@ def sync_rundir( src, dst ):
     src = normpath( src )
     rsync( src, dst )
 
-def sync_fastq( src, dst, path ):
+def sync_fastq( src, dst, path, callback=None ):
     '''
         Just sync the fastqs that are under join(dst,path)
+        Calls callback after the rsync completes with src,dst,path
     '''
     srcbn = basename(src)
     src = join(src,path)
@@ -62,7 +59,9 @@ def sync_fastq( src, dst, path ):
             raise e
 
     print "Syncing Fastqs"
-    rsync( src, dst, exclude=['Matrix','L001','Phasing','Alignment'] )
+    rc = rsync( src, dst, exclude=['Matrix','L001','Phasing','Alignment'] )
+    if callback is not None:
+        callback( src, dst, path )
 
     return dst
 
@@ -80,6 +79,8 @@ def rsync( src, dst, exclude=[], include=[] ):
     for line in iter(p.stdout.readline,b''):
         print line.rstrip()
 
+    return p.returncode
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Automatically sync data from MiSeq. Syncs the fastq files '\
@@ -87,21 +88,14 @@ def parse_args():
     )
 
     parser.add_argument(
-        '-s',
-        '--src',
         dest='src',
-        default=DEFAULT_SRC,
         help='Path to illumina run to sync into dest or '\
-            'directory that contains MiSeq runs and latest will be used'\
-            '[Default:{}]'.format(DEFAULT_SRC)
+            'directory that contains MiSeq runs and latest will be used'
     )
 
     parser.add_argument(
-        '-d',
-        '--dest',
         dest='dest',
-        default=DEFAULT_DEST,
-        help='Base directory to copy runs into[Default:{}]'.format(DEFAULT_DEST)
+        help='Base directory to copy runs into'
     )
 
     return parser.parse_args()

@@ -3,12 +3,30 @@ import tempfile
 from os.path import join, dirname, basename, normpath
 import os.path
 import os
+import shutil
+import gzip
 
 from .. import rundir
 
+class BaseClass( object ):
+    def setUp( self ):
+        self.tempdir = tempfile.mkdtemp()
+        os.chdir( self.tempdir )
+
+    def tearDown( self ):
+        os.chdir( '/' )
+        shutil.rmtree( self.tempdir )
+
 def mktempfile( path ):
     print "Created: {}".format(path)
-    open( path, 'w' ).close()
+    with gzip.open( path, 'w' ) as fh:
+        fh.write( path )
+    return path
+
+def mkgztempfile( path ):
+    print "Created: {}".format(path)
+    with gzip.open( path, 'w' ) as fh:
+        fh.write( path )
     return path
 
 @contextmanager
@@ -43,4 +61,4 @@ def make_mockrundir( dir, completed=True ):
         bcdir = join(dir,rundir.IlluminaRunDir.BASECALLERDIR)
         os.makedirs( bcdir )
         for fq in fastqs:
-            mktempfile( join(bcdir,fq) )
+            mkgztempfile( join(bcdir,fq) )

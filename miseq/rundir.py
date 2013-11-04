@@ -1,8 +1,10 @@
-from os.path import join, basename, dirname, exists
+from os.path import join, basename, dirname, exists, splitext
 import os.path
 import os
 import datetime
 from glob import glob
+
+import util
 
 class IlluminaOutputDir( object ):
     def __init__( self, path ):
@@ -86,11 +88,26 @@ class IlluminaRunDir( object ):
 
     def get_reads( self ):
         '''
-            Returns all the fastq files for the run
+            Returns all the fastq.gz files for the run
 
             @returns list of abs paths to each fastq
         '''
         return glob( join(self.bcdir,'*.fastq.gz') )
+
+    def extract_reads( self, dstdir ):
+        '''
+            Extracts all of the read files into dstdir
+             essentially doubling+uncompressed space the amount of storage
+
+            @returns a list of abspaths to the extracted reads
+        '''
+        extracted_reads = []
+        for readgz in self.get_reads():
+            bn,ext = splitext( basename(readgz) )
+            read = join(dstdir,bn)
+            util.ungzip( readgz, read )
+            extracted_reads.append( read )
+        return extracted_reads
 
 class MiSeqRunDir( IlluminaRunDir ):
     pass

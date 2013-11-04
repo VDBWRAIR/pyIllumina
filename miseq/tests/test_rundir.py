@@ -1,4 +1,5 @@
 from .. import rundir
+import util
 
 from nose.tools import eq_, raises
 
@@ -24,16 +25,7 @@ def create_mockrundir( mockdirpath, completed=True ):
     import util
     util.make_mockrundir( mockdirpath, completed )
 
-class BaseClass( object ):
-    def setUp( self ):
-        self.tempdir = tempfile.mkdtemp()
-        os.chdir( self.tempdir )
-
-    def tearDown( self ):
-        os.chdir( '/' )
-        shutil.rmtree( self.tempdir )
-
-class TestIlluminaOutputDir( BaseClass ):
+class TestIlluminaOutputDir( util.BaseClass ):
     def test_rundirsrelpath( self ):
         testdirs = ['1','2','3']
         for d in testdirs:
@@ -97,7 +89,7 @@ class TestIlluminaOutputDir( BaseClass ):
         print cdate
         assert tdiff <= 1
     
-class TestIlluminaRunDir( BaseClass ):
+class TestIlluminaRunDir( util.BaseClass ):
     rp = rundir.IlluminaRunDir.RUNPARAMSFILE
     cji = rundir.IlluminaRunDir.COMPLETEDFILE
 
@@ -132,3 +124,14 @@ class TestIlluminaRunDir( BaseClass ):
         create(join(ird.bcdir,'notaread'))
 
         eq_( mockreads, ird.get_reads() )
+
+    def test_extractreads( self ):
+        create_mockrundir( 'rundir1' )
+        rd = rundir.IlluminaRunDir( 'rundir1' )
+        rdlst = rd.get_reads()
+        extracted_reads = []
+        with util.mktempdir( ) as outdir:
+            extracted_reads = rd.extract_reads( outdir )
+        print rdlst
+        print extracted_reads
+        assert len(rdlst) == len(extracted_reads)

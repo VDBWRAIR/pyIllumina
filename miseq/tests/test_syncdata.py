@@ -41,12 +41,12 @@ class TestSyncData(object):
                 del dst_struc[basename(dstdir)]
                 eq_( src_struc, dst_struc )
 
-    def tst_syncfastq( self, bcdir ):
+    def tst_syncfastq( self, bcdir, callback=None ):
         with util.mktempdir( self.tempdir ) as dstdir:
             with util.mktempdir( self.tempdir ) as srcdir:
                 self.make_rsynctests( srcdir )
                 src_struc = self.get_structure( srcdir )
-                syncdata.sync_fastq( srcdir, dstdir,  bcdir )
+                syncdata.sync_fastq( srcdir, dstdir,  bcdir, callback=callback )
                 dst_struc = self.get_structure( dstdir )
                 del dst_struc[basename(dstdir)]
                 eq_( src_struc[basename(normpath(bcdir))], dst_struc[basename(normpath(bcdir))] )
@@ -67,3 +67,17 @@ class TestSyncData(object):
             dir2 = create_mockrundir( 'run2' )
             syncdata.sync_latest( self.tempdir, dstdir )
             eq_( 'run2', os.listdir( dstdir )[0] )
+
+    def test_syncfastqcallback( self ):
+        try:
+            os.unlink('test')
+        except OSError:
+            pass
+
+        def cbtest( src, dst, path ):
+            with open('rancallback','w') as fh:
+                fh.write( "{}\n".format(src+dst+path) )
+
+        self.tst_syncfastq( rundir.IlluminaRunDir.BASECALLERDIR, cbtest )
+        
+        assert open('rancallback').read() != ''
