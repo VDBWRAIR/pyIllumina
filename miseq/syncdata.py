@@ -8,32 +8,33 @@ import shlex
 import os
 
 import util
-from rundir import MiSeqRunDir
+import rundir
 
 # Defaults
 DEFAULT_DEST = "/home/EIDRUdata/NGSData/RawData/MiSeq"
 DEFAULT_SRC = "/MiSeq/Illumina/MiSeqOutput"
 
-# Common Dirs
-BASECALLS_DIR = MiSeqRunDir.BASECALLERDIR
-
 def main():
     args = parse_args()
     src = args.src
     dst = args.dest
-    basecallsdir = args.basecallsdir
-    sync_run( src, dst, basecallsdir )
+    try:
+        sync_run( src, dst )
+    except ValueError:
+        sync_latest( src, dst )
 
-def sync_run( src, dst, basecallsdir ):
-    # If a non run directory was given assume that
-    # the user specified the OutputDirectory and get the
-    # latest run to transfer
-    if not util.isRunDir( src ):
-        src = join(src,util.getLatestRun( src ))
-        assert src
+def sync_latest( src, dst ):
+    rd = rundir.IlluminaOutputDir( src )
+    try:
+        sync_run( rd.get_latest_run().abspath, dst )
+    except AttributeError:
+        print "There are no valid Illumina Runs in {}".format(src)
 
-    sync_fastq( src, dst, basecallsdir )
-    sync_rundir( src, dst )
+def sync_run( src, dst ):
+    rund = rundir.IlluminaRunDir( src )
+
+    sync_fastq( rund.abspath, dst, rund.BASECALLERDIR )
+    sync_rundir( rund.abspath, dst )
 
 def sync_rundir( src, dst ):
     '''
@@ -90,7 +91,7 @@ def parse_args():
         '--src',
         dest='src',
         default=DEFAULT_SRC,
-        help='Path to run to sync into dest or '\
+        help='Path to illumina run to sync into dest or '\
             'directory that contains MiSeq runs and latest will be used'\
             '[Default:{}]'.format(DEFAULT_SRC)
     )
@@ -101,15 +102,6 @@ def parse_args():
         dest='dest',
         default=DEFAULT_DEST,
         help='Base directory to copy runs into[Default:{}]'.format(DEFAULT_DEST)
-    )
-
-    parser.add_argument(
-        '-b',
-        '--base-calls',
-        dest='basecallsdir',
-        default=BASECALLS_DIR,
-        help='Base calls subdirectory path that contains fastq.gz files. '\
-            '[Default:{}]'.format(BASECALLS_DIR)
     )
 
     return parser.parse_args()
