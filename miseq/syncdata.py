@@ -20,6 +20,10 @@ def main():
         sync_latest( src, dst )
 
 def sync_latest( src, dst ):
+    '''
+        Fetches the latest Illumina Run inside of src and then
+        syncs it into dst
+    '''
     rd = rundir.IlluminaOutputDir( src )
     try:
         sync_run( rd.get_latest_run().abspath, dst )
@@ -27,6 +31,12 @@ def sync_latest( src, dst ):
         print "There are no valid Illumina Runs in {}".format(src)
 
 def sync_run( src, dst ):
+    '''
+        Syncs an Illumina run directory at src into dst
+        
+        @param src - Path to illumina run directory
+        @param dst - Path to sync the run into --> join(dst,basename(src))
+    '''
     rund = rundir.IlluminaRunDir( src )
 
     sync_fastq( rund.abspath, dst, rund.BASECALLERDIR )
