@@ -48,6 +48,9 @@ def sync_rundir( src, dst ):
         aka rsync -av --progress src dst/
         that is, ensure src does not have trailing /
         so that it is synced into dst
+
+        @param src - Source run directory path to sync
+        @param dst - Destination path to sync src into
     '''
     print "Syncing everything else"
     # Ensure path does not have trailing /
@@ -58,6 +61,15 @@ def sync_fastq( src, dst, path, callback=None ):
     '''
         Just sync the fastqs that are under join(dst,path)
         Calls callback after the rsync completes with src,dst,path
+
+        @param src - Path to an illumina run directory
+        @param dst - Path to sync src into
+        @param path - Relative path to the directory that contains the fastq.gz files
+            to sync(Probably IlluminaRunDir.BASECALLERDIR)
+        @param callback - Function to call if not None. src, dst and path are given
+            as arguments to the function
+
+        @returns join(dst,basename(src),path)
     '''
     srcbn = basename(src)
     src = join(src,path)
